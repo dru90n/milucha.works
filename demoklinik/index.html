@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Klinik Estetika & Gigi Sehat — Booking Perawatan Tanpa Antre</title>
-    <meta name="description" content="Klinik wajah dan perawatan gigi modern. Konsultasi dokter spesialis, jadwal fleksibel, dan booking instan via WhatsApp.">
+    <title>AuraMed Clinic — Estetika & Perawatan Gigi Modern</title>
+    <meta name="description" content="Klinik kecantikan dan kesehatan gigi terpadu. Konsultasi dokter spesialis berpengalaman dengan sistem reservasi instan.">
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -12,271 +12,307 @@
         tailwind.config = { darkMode: 'class' }
     </script>
     <script>
-        if (localStorage.getItem('clinic-theme') === 'dark' || (!('clinic-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        if (localStorage.getItem('auramed-theme') === 'dark' || (!('auramed-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
         }
     </script>
 </head>
-<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 antialiased font-sans pb-32 transition-colors duration-300">
+<body class="bg-teal-50/40 text-slate-800 dark:bg-slate-950 dark:text-slate-100 antialiased font-sans transition-colors duration-300">
 
-    <!-- Header / Navbar -->
-    <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
-        <div class="max-w-3xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <span class="w-8 h-8 rounded-full bg-cyan-500 text-slate-950 flex items-center justify-center font-black text-xs">KD</span>
+    <!-- Top Navbar Medis -->
+    <header class="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-teal-100 dark:border-slate-800">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+            <a href="#" class="flex items-center gap-2.5">
+                <span class="w-9 h-9 rounded-2xl bg-teal-600 text-white flex items-center justify-center font-black text-base shadow-sm">+</span>
                 <div>
-                    <h1 class="font-extrabold text-sm sm:text-base leading-tight">Klinik Estetika & Gigi</h1>
-                    <p class="text-[10px] text-cyan-600 dark:text-cyan-400 font-semibold">● Dokter Spesialis Ready • Tanpa Antre</p>
+                    <span class="font-extrabold text-base sm:text-lg tracking-tight block leading-none">AuraMed<span class="text-teal-600">.</span></span>
+                    <span class="text-[10px] text-teal-700 dark:text-teal-400 font-semibold uppercase tracking-wider">Aesthetic & Dental Clinic</span>
                 </div>
-            </div>
+            </a>
 
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 sm:gap-3">
+                <a href="#reservasi" class="hidden sm:inline-block bg-teal-600 hover:bg-teal-700 text-white font-bold px-4 py-2 rounded-xl text-xs transition shadow-sm">
+                    Buat Janji Temu
+                </a>
+
                 <!-- Toggle Tema -->
-                <button id="theme-toggle" type="button" aria-label="Ganti Tema" class="p-2 rounded-full text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
-                    <svg id="theme-toggle-light-icon" class="hidden w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-                    <svg id="theme-toggle-dark-icon" class="hidden w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                <button id="theme-toggle" type="button" aria-label="Ganti Tema" class="p-2.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:border-teal-600 transition shadow-sm">
+                    <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                    <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
                 </button>
-                <a href="https://milucha.my.id" class="text-xs font-medium text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white px-2 py-1">
+
+                <a href="https://milucha.my.id" class="text-xs font-semibold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white px-2">
                     &larr; Beranda
                 </a>
             </div>
         </div>
     </header>
 
-    <!-- Konten Utama -->
-    <main class="max-w-3xl mx-auto px-4 pt-4 space-y-10">
-        
-        <!-- Banner Selling Point -->
-        <div class="bg-cyan-500 text-slate-950 p-4 rounded-2xl shadow-sm">
-            <h2 class="font-black text-base">Senyum Percaya Diri & Kulit Glowing ✨</h2>
-            <p class="text-xs mt-0.5 text-slate-900 opacity-90">Pilih treatment wajah atau perawatan gigi favoritmu, masukkan ke keranjang, dan booking jadwal konsultasi dokter secara instan.</p>
+    <!-- Hero Section Elegan & Bersih -->
+    <section class="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-12">
+        <div class="bg-gradient-to-br from-teal-700 to-teal-900 text-white rounded-3xl p-6 sm:p-10 shadow-lg relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 w-60 h-60 bg-teal-600/30 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="relative z-10 max-w-xl">
+                <span class="bg-teal-500/30 text-teal-200 border border-teal-400/30 text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block">
+                    Klinik Bersertifikasi Medis &bull; Sterilisasi Steril 100%
+                </span>
+                <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight mb-4">
+                    Perawatan Wajah & Gigi Tanpa Rasa Cemas.
+                </h1>
+                <p class="text-teal-100 text-xs sm:text-sm leading-relaxed mb-6">
+                    Ditangani langsung oleh dokter spesialis kulit dan dokter gigi berpengalaman menggunakan teknologi medis mutakhir di lingkungan yang nyaman.
+                </p>
+                <div class="flex flex-wrap gap-3">
+                    <a href="#layanan" class="bg-white text-slate-900 font-bold text-xs px-6 py-3.5 rounded-2xl hover:bg-teal-50 transition shadow-sm">
+                        Eksplorasi Layanan
+                    </a>
+                    <a href="#reservasi" class="bg-teal-800/80 border border-teal-600 hover:bg-teal-800 text-white font-semibold text-xs px-6 py-3.5 rounded-2xl transition">
+                        Booking Jadwal Dokter
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 1: PILIHAN LAYANAN & TREATMENT (Gaya Bento Grid Profesional) -->
+    <section id="layanan" class="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+            <div>
+                <span class="text-teal-600 dark:text-teal-400 font-bold text-xs uppercase tracking-wider">Katalog Perawatan</span>
+                <h2 class="text-2xl font-extrabold tracking-tight mt-0.5">Layanan & Estetika Unggulan</h2>
+            </div>
+            <!-- Filter Kategori -->
+            <div class="flex gap-2" id="category-filters">
+                <button data-cat="ALL" class="filter-btn active px-4 py-2 rounded-2xl text-xs font-bold bg-teal-600 text-white transition">Semua</button>
+                <button data-cat="Wajah" class="filter-btn px-4 py-2 rounded-2xl text-xs font-semibold bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 transition">✨ Klinik Wajah</button>
+                <button data-cat="Gigi" class="filter-btn px-4 py-2 rounded-2xl text-xs font-semibold bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 transition">🦷 Dokter Gigi</button>
+            </div>
         </div>
 
-        <!-- Filter Kategori Layanan -->
-        <section>
-            <div class="flex gap-2 overflow-x-auto pb-2 mb-4 scrollbar-none" id="category-filters">
-                <button data-cat="ALL" class="filter-btn active whitespace-nowrap px-4 py-2 rounded-xl text-xs font-bold bg-cyan-500 text-slate-950 shadow-sm transition">Semua Layanan</button>
-                <button data-cat="Wajah" class="filter-btn whitespace-nowrap px-4 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 transition">Klinik Wajah</button>
-                <button data-cat="Gigi" class="filter-btn whitespace-nowrap px-4 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 transition">Dokter Gigi</button>
-                <button data-cat="Paket" class="filter-btn whitespace-nowrap px-4 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 transition">Paket Hemat</button>
+        <!-- Grid Layanan Profesional -->
+        <div id="service-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <!-- Di-render via JavaScript -->
+        </div>
+    </section>
+
+    <!-- SECTION 2: JADWAL DOKTER SPESIALIS (Fitur Khusus Klinik) -->
+    <section class="max-w-5xl mx-auto px-4 sm:px-6 py-10 border-t border-slate-200 dark:border-slate-800">
+        <div class="mb-6">
+            <span class="text-teal-600 dark:text-teal-400 font-bold text-xs uppercase tracking-wider">Tim Medis Profesional</span>
+            <h2 class="text-2xl font-extrabold tracking-tight mt-0.5">Jadwal Praktik Dokter Spesialis</h2>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl p-5 shadow-xs">
+                <div class="w-12 h-12 rounded-2xl bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center text-xl font-bold mb-3">👩‍⚕️</div>
+                <h3 class="font-bold text-base">dr. Amanda, Sp.KK</h3>
+                <p class="text-xs text-teal-600 dark:text-teal-400 font-medium mb-2">Spesialis Kulit & Estetika Wajah</p>
+                <div class="text-xs text-slate-500 dark:text-slate-400 space-y-1 pt-2 border-t border-slate-100 dark:border-slate-800">
+                    <div>📅 Senin, Rabu, Jumat</div>
+                    <div>⏰ 10.00 – 17.00 WIB</div>
+                </div>
             </div>
 
-            <!-- Daftar List Layanan -->
-            <div id="service-list" class="space-y-3">
-                <!-- Di-render via JavaScript -->
-            </div>
-        </section>
-
-        <!-- Form Booking Konsultasi & Jadwal Dokter -->
-        <section class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 shadow-sm">
-            <div class="mb-5">
-                <span class="text-cyan-600 dark:text-cyan-400 font-bold text-[11px] uppercase tracking-wider">Reservasi Praktis</span>
-                <h3 class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white mt-0.5">Form Booking Dokter & Perawatan</h3>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Pilih jadwal kedatangan Anda agar langsung dilayani tanpa antre panjang.</p>
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl p-5 shadow-xs">
+                <div class="w-12 h-12 rounded-2xl bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center text-xl font-bold mb-3">👨‍⚕️</div>
+                <h3 class="font-bold text-base">drg. Sarah, Sp.Ort</h3>
+                <p class="text-xs text-teal-600 dark:text-teal-400 font-medium mb-2">Spesialis Ortodonti & Behel</p>
+                <div class="text-xs text-slate-500 dark:text-slate-400 space-y-1 pt-2 border-t border-slate-100 dark:border-slate-800">
+                    <div>📅 Selasa, Kamis, Sabtu</div>
+                    <div>⏰ 13.00 – 20.00 WIB</div>
+                </div>
             </div>
 
-            <form id="form-booking" class="space-y-3.5">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl p-5 shadow-xs">
+                <div class="w-12 h-12 rounded-2xl bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center text-xl font-bold mb-3">🦷</div>
+                <h3 class="font-bold text-base">drg. Budi Pratama</h3>
+                <p class="text-xs text-teal-600 dark:text-teal-400 font-medium mb-2">Dokter Gigi Umum & Konservasi</p>
+                <div class="text-xs text-slate-500 dark:text-slate-400 space-y-1 pt-2 border-t border-slate-100 dark:border-slate-800">
+                    <div>📅 Setiap Hari (Kecuali Minggu)</div>
+                    <div>⏰ 09.00 – 19.00 WIB</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: FORMULIR RESERVASI JANJI TEMU (Reservasi Instan) -->
+    <section id="reservasi" class="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-sm">
+            <div class="text-center max-w-lg mx-auto mb-6">
+                <span class="text-teal-600 dark:text-teal-400 font-bold text-xs uppercase tracking-wider">Bebas Antre Panjang</span>
+                <h2 class="text-2xl font-extrabold tracking-tight mt-0.5">Formulir Reservasi Janji Temu</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Pilih treatment dan jadwalkan kedatangan Anda, staf kami akan mengkonfirmasi langsung via WhatsApp.</p>
+            </div>
+
+            <form id="booking-form" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                     <div>
-                        <label class="block text-xs font-semibold mb-1">Nama Lengkap</label>
-                        <input type="text" id="bk-name" required placeholder="Nama Anda" class="w-full px-3.5 py-2.5 rounded-xl text-xs bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 focus:outline-none focus:border-cyan-500">
+                        <label class="block text-xs font-semibold mb-1">Nama Lengkap Pasien</label>
+                        <input type="text" id="bk-name" required placeholder="Nama Anda" class="w-full px-4 py-3 rounded-2xl text-xs bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 focus:outline-none focus:border-teal-600">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold mb-1">Nomor WhatsApp</label>
-                        <input type="tel" id="bk-phone" required placeholder="Contoh: 08123456789" class="w-full px-3.5 py-2.5 rounded-xl text-xs bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 focus:outline-none focus:border-cyan-500">
+                        <label class="block text-xs font-semibold mb-1">Nomor WhatsApp Aktif</label>
+                        <input type="tel" id="bk-phone" required placeholder="Contoh: 08123456789" class="w-full px-4 py-3 rounded-2xl text-xs bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 focus:outline-none focus:border-teal-600">
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                     <div>
-                        <label class="block text-xs font-semibold mb-1">Pilih Dokter Spesialis</label>
-                        <select id="bk-doctor" class="w-full px-3.5 py-2.5 rounded-xl text-xs bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 focus:outline-none focus:border-cyan-500">
-                            <option value="drg. Sarah Sp.Ort (Spesialis Gigi)">drg. Sarah Sp.Ort (Spesialis Gigi)</option>
-                            <option value="dr. Amanda Sp.KK (Spesialis Kulit & Wajah)">dr. Amanda Sp.KK (Spesialis Kulit & Wajah)</option>
-                            <option value="drg. Budi Pratama (Dokter Gigi Umum)">drg. Budi Pratama (Dokter Gigi Umum)</option>
+                        <label class="block text-xs font-semibold mb-1">Pilih Jenis Treatment / Layanan</label>
+                        <select id="bk-service" class="w-full px-4 py-3 rounded-2xl text-xs bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 focus:outline-none focus:border-teal-600">
+                            <option value="Consultation & Facial Glowing">Consultation & Facial Glowing (Rp 175.000)</option>
+                            <option value="Acne Laser Treatment">Acne Laser Treatment (Rp 350.000)</option>
+                            <option value="Pembersihan Karang Gigi (Scaling)">Pembersihan Karang Gigi / Scaling (Rp 200.000)</option>
+                            <option value="Pemasangan Behel Gigi">Pemasangan Behel Gigi / Ortodonti (Rp 3.500.000)</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold mb-1">Rencana Tanggal Kunjungan</label>
-                        <input type="date" id="bk-date" required class="w-full px-3.5 py-2.5 rounded-xl text-xs bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 focus:outline-none focus:border-cyan-500">
+                        <input type="date" id="bk-date" required class="w-full px-4 py-3 rounded-2xl text-xs bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 focus:outline-none focus:border-teal-600">
                     </div>
                 </div>
 
-                <button type="submit" class="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-3 rounded-xl text-xs sm:text-sm transition shadow-sm mt-2">
+                <button type="submit" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-3.5 rounded-2xl text-xs sm:text-sm transition shadow-sm mt-2">
                     Kirim Permintaan Booking via WhatsApp
                 </button>
             </form>
-        </section>
-
-    </main>
-
-    <!-- Floating Footer Keranjang Perawatan -->
-    <div id="cart-footer" class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 p-3 shadow-lg hidden">
-        <div class="max-w-3xl mx-auto flex items-center justify-between gap-3">
-            <div>
-                <div class="text-[11px] text-slate-500 dark:text-slate-400 font-medium"><span id="cart-count">0</span> treatment dipilih</div>
-                <div id="cart-total" class="text-base font-extrabold text-cyan-600 dark:text-cyan-400">Rp 0</div>
-            </div>
-            <button onclick="checkoutWhatsApp()" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs shadow-md transition flex items-center gap-1">
-                <span>Booking Treatment WA</span> ➔
-            </button>
         </div>
-    </div>
+    </section>
 
-    <!-- Footer Standar -->
-    <footer class="max-w-3xl mx-auto px-4 py-8 mt-12 border-t border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 text-xs">
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-6">
+    <!-- Footer Klinik -->
+    <footer class="max-w-5xl mx-auto px-4 sm:px-6 py-8 mt-12 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-                <div class="font-extrabold text-sm text-slate-900 dark:text-white mb-1.5">
-                    Klinik Estetika & <span class="text-cyan-500">Gigi Sehat</span>
-                </div>
-                <p class="leading-relaxed">
-                    Solusi terpadu perawatan wajah dan kesehatan gigi dengan alat sterilisasi medis berstandar internasional.
-                </p>
+                <span class="font-extrabold text-sm text-slate-900 dark:text-white">AuraMed Clinic</span>
+                <p class="mt-1">Jl. Letjen Sutoyo No. 45, Malang &bull; Telp / WA: 08xx-xxxx-xxxx</p>
             </div>
-            <div>
-                <h4 class="font-bold text-slate-900 dark:text-white mb-1.5">Jam Operasional</h4>
-                <p class="leading-relaxed">
-                    Senin – Sabtu: 09.00 – 20.00 WIB<br>
-                    Minggu: 09.00 – 15.00 WIB
-                </p>
+            <div class="flex gap-4">
+                <a href="https://milucha.my.id" class="hover:text-teal-600 transition">Web Utama Milucha Works</a>
+                <span>&copy; 2026 AuraMed Clinic</span>
             </div>
-            <div>
-                <h4 class="font-bold text-slate-900 dark:text-white mb-1.5">Kontak & Lokasi</h4>
-                <p class="leading-relaxed">
-                    Jl. Kesehatan No. 10, Malang<br>
-                    WhatsApp CS: 08xx-xxxx-xxxx
-                </p>
-            </div>
-        </div>
-        <div class="pt-4 border-t border-slate-200 dark:border-slate-800 text-center text-[11px]">
-            &copy; 2026 Klinik Estetika & Gigi Sehat. Demo Template by Milucha Works.
         </div>
     </footer>
 
-    <!-- JavaScript Logika Keranjang & Booking -->
+    <!-- JavaScript Data & Interaksi Medis -->
     <script>
         const WA_NUMBER = "628xxxxxxxxxx"; // Ganti dengan nomor WhatsApp klinik Anda
 
         const servicesData = [
-            { id: 1, name: "Consultation & Facial Glowing Signature", category: "Wajah", duration: "60 Menit", price: 175000, img: "https://images.unsplash.com/photo-1512290900722-9a70f8427d2c?auto=format&fit=crop&w=400&q=80", desc: "Pembersihan komedo mendalam, ekstraksi steril, dan masker pencerah wajah instan." },
-            { id: 2, name: "Acne Laser Treatment (Basmi Jerawat)", category: "Wajah", duration: "45 Menit", price: 350000, img: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=400&q=80", desc: "Mengurangi peradangan jerawat aktif dan memudarkan bekas noda hitam dengan teknologi laser." },
-            { id: 3, name: "Pembersihan Karang Gigi (Scaling)", category: "Gigi", duration: "45 Menit", price: 200000, img: "https://images.unsplash.com/photo-1606811841689-23dfddce6395?auto=format&fit=crop&w=400&q=80", desc: "Membersihkan karang gigi secara menyeluruh tanpa ngilu, mencegah radang gusi dan bau mulut." },
-            { id: 4, name: "Pemasangan Behel / Ortodonti Ringan", category: "Gigi", duration: "90 Menit", price: 3500000, img: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=400&q=80", desc: "Merapikan struktur gigi oleh dokter spesialis ortodonti berpengalaman dengan cicilan ringan." },
-            { id: 5, name: "Paket Sehat (Facial + Scaling Gigi)", category: "Paket", duration: "90 Menit", price: 340000, img: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=400&q=80", desc: "Bundling perawatan komplit wajah glowing sekaligus gigi bersih sehat lebih hemat." }
+            {
+                id: 1,
+                name: "Consultation & Facial Glowing Signature",
+                category: "Wajah",
+                duration: "60 Menit",
+                price: 175000,
+                img: "https://images.unsplash.com/photo-1512290900722-9a70f8427d2c?auto=format&fit=crop&w=600&q=80",
+                desc: "Pembersihan komedo mendalam, ekstraksi steril, dan masker pencerah wajah instan langsung oleh aesthetician."
+            },
+            {
+                id: 2,
+                name: "Acne Laser Treatment (Basmi Jerawat)",
+                category: "Wajah",
+                duration: "45 Menit",
+                price: 350000,
+                img: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=600&q=80",
+                desc: "Mengurangi peradangan jerawat aktif dan memudarkan bekas noda hitam dengan teknologi medis sinar laser."
+            },
+            {
+                id: 3,
+                name: "Pembersihan Karang Gigi (Scaling)",
+                category: "Gigi",
+                duration: "45 Menit",
+                price: 200000,
+                img: "https://images.unsplash.com/photo-1606811841689-23dfddce6395?auto=format&fit=crop&w=600&q=80",
+                desc: "Membersihkan karang gigi secara menyeluruh tanpa rasa ngilu, mencegah radang gusi dan bau mulut."
+            },
+            {
+                id: 4,
+                name: "Pemasangan Behel / Ortodonti",
+                category: "Gigi",
+                duration: "90 Menit",
+                price: 3500000,
+                img: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=600&q=80",
+                desc: "Merapikan struktur gigi oleh dokter spesialis ortodonti berpengalaman dengan alat berstandar medis."
+            }
         ];
 
-        let cart = {};
+        const formatRupiah = (num) => 'Rp ' + num.toLocaleString('id-ID');
         let currentCategory = 'ALL';
 
-        const formatRupiah = (num) => 'Rp ' + num.toLocaleString('id-ID');
-        const serviceList = document.getElementById('service-list');
-
         function renderServices() {
-            const filtered = servicesData.filter(item => currentCategory === 'ALL' || item.category === currentCategory);
+            const grid = document.getElementById('service-grid');
+            const filtered = servicesData.filter(s => currentCategory === 'ALL' || s.category === currentCategory);
 
-            serviceList.innerHTML = filtered.map(item => {
-                const qty = cart[item.id] || 0;
-                return `
-                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3.5 flex gap-3.5 items-center shadow-sm">
-                        <img src="${item.img}" alt="${item.name}" class="w-20 h-20 sm:w-24 sm:h-24 rounded-xl object-cover flex-shrink-0">
-                        <div class="flex-1 min-w-0">
-                            <span class="text-[10px] font-bold text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-950/70 px-2 py-0.5 rounded">${item.category} • ⏱️ ${item.duration}</span>
-                            <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white truncate mt-1">${item.name}</h3>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-1 mt-0.5">${item.desc}</p>
-                            <div class="font-extrabold text-sm sm:text-base text-cyan-600 dark:text-cyan-400 mt-1">${formatRupiah(item.price)}</div>
+            grid.innerHTML = filtered.map(item => `
+                <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl overflow-hidden shadow-xs hover:shadow-md transition flex flex-col justify-between">
+                    <div>
+                        <div class="relative h-44 overflow-hidden bg-slate-100 dark:bg-slate-800">
+                            <img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover">
+                            <span class="absolute top-3 left-3 bg-white/90 dark:bg-slate-900/90 text-slate-900 dark:text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-xs">
+                                ${item.category === 'Wajah' ? '✨' : '🦷'} ${item.category} &bull; ${item.duration}
+                            </span>
                         </div>
-                        <div class="flex flex-col items-end justify-center self-stretch">
-                            ${qty === 0 ? `
-                                <button onclick="updateCart(${item.id}, 1)" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-3 py-1.5 rounded-xl text-xs shadow-sm transition">+ Pilih</button>
-                            ` : `
-                                <div class="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
-                                    <button onclick="updateCart(${item.id}, -1)" class="w-6 h-6 rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-white font-bold text-xs flex items-center justify-center">-</button>
-                                    <span class="text-xs font-bold px-1">${qty}</span>
-                                    <button onclick="updateCart(${item.id}, 1)" class="w-6 h-6 rounded-lg bg-cyan-500 text-slate-950 font-bold text-xs flex items-center justify-center">+</button>
-                                </div>
-                            `}
+                        <div class="p-5">
+                            <h3 class="font-extrabold text-base mb-1">${item.name}</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-3">${item.desc}</p>
+                            <div class="font-extrabold text-base text-teal-600 dark:text-teal-400">${formatRupiah(item.price)}</div>
                         </div>
                     </div>
-                `;
-            }).join('');
+                    <div class="px-5 pb-5">
+                        <button onclick="selectServiceForBooking('${item.name}')" class="w-full bg-teal-50 dark:bg-teal-950/60 hover:bg-teal-600 hover:text-white text-teal-700 dark:text-teal-300 font-bold py-2.5 rounded-2xl text-xs transition">
+                            Pilih & Booking Jadwal
+                        </button>
+                    </div>
+                </div>
+            `).join('');
         }
 
         // Filter Kategori
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.filter-btn').forEach(b => {
-                    b.classList.remove('bg-cyan-500', 'text-slate-950', 'font-bold', 'shadow-sm');
-                    b.classList.add('bg-white', 'dark:bg-slate-900', 'text-slate-700', 'dark:text-slate-300');
+                    b.classList.remove('bg-teal-600', 'text-white', 'font-bold');
+                    b.classList.add('bg-white', 'dark:bg-slate-900', 'text-slate-600', 'dark:text-slate-300');
                 });
-                btn.classList.remove('bg-white', 'dark:bg-slate-900', 'text-slate-700', 'dark:text-slate-300');
-                btn.classList.add('bg-cyan-500', 'text-slate-950', 'font-bold', 'shadow-sm');
+                btn.classList.remove('bg-white', 'dark:bg-slate-900', 'text-slate-600', 'dark:text-slate-300');
+                btn.classList.add('bg-teal-600', 'text-white', 'font-bold');
                 currentCategory = btn.dataset.cat;
                 renderServices();
             });
         });
 
-        function updateCart(id, change) {
-            cart[id] = (cart[id] || 0) + change;
-            if (cart[id] <= 0) delete cart[id];
-            renderServices();
-            updateCartFooter();
-        }
-
-        function updateCartFooter() {
-            const footer = document.getElementById('cart-footer');
-            const countEl = document.getElementById('cart-count');
-            const totalEl = document.getElementById('cart-total');
-            let totalCount = 0, totalPrice = 0;
-
-            for (const [id, qty] of Object.entries(cart)) {
-                const srv = servicesData.find(s => s.id == id);
-                totalCount += qty;
-                totalPrice += srv.price * qty;
+        // Pilih layanan dari card langsung masuk ke form
+        function selectServiceForBooking(serviceName) {
+            const selectEl = document.getElementById('bk-service');
+            for (let i = 0; i < selectEl.options.length; i++) {
+                if (selectEl.options[i].text.includes(serviceName)) {
+                    selectEl.selectedIndex = i;
+                    break;
+                }
             }
-
-            countEl.textContent = totalCount;
-            totalEl.textContent = formatRupiah(totalPrice);
-            if (totalCount > 0) footer.classList.remove('hidden');
-            else footer.classList.add('hidden');
+            document.getElementById('reservasi').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function checkoutWhatsApp() {
-            let message = "Halo Klinik Estetika & Gigi Sehat, saya ingin booking treatment berikut:\n\n";
-            let totalPrice = 0;
-            for (const [id, qty] of Object.entries(cart)) {
-                const srv = servicesData.find(s => s.id == id);
-                const subtotal = srv.price * qty;
-                totalPrice += subtotal;
-                message += `• ${srv.name} x${qty} - ${formatRupiah(subtotal)}\n`;
-            }
-            message += `\n*Total Estimasi: ${formatRupiah(totalPrice)}*\nMohon info ketersediaan jadwalnya. Terima kasih!`;
-            window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
-        }
-
-        // Form Booking Submit ke WhatsApp
-        document.getElementById('form-booking').addEventListener('submit', (e) => {
+        // Form Submit Booking -> WhatsApp
+        document.getElementById('booking-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const name = document.getElementById('bk-name').value;
             const phone = document.getElementById('bk-phone').value;
-            const doctor = document.getElementById('bk-doctor').value;
+            const service = document.getElementById('bk-service').value;
             const date = document.getElementById('bk-date').value;
 
-            let message = `Halo Klinik Estetika & Gigi Sehat, saya ingin *Booking Konsultasi/Perawatan*:\n\n`;
-            message += `• Nama: ${name}\n• No WhatsApp: ${phone}\n• Pilihan Dokter: ${doctor}\n• Tanggal Kunjungan: ${date}\n\nMohon konfirmasi jadwal temu dokternya. Terima kasih!`;
-            
-            window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+            const msg = `Halo AuraMed Clinic, saya ingin *Reservasi Janji Temu*:\n\n• Nama Pasien: ${name}\n• No WhatsApp: ${phone}\n• Pilihan Layanan: ${service}\n• Rencana Tanggal: ${date}\n\nMohon konfirmasi jadwal dokternya. Terima kasih!`;
+            window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
         });
 
         // Theme Toggle
         const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
         const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
-        if (localStorage.getItem('clinic-theme') === 'dark' || (!('clinic-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        if (localStorage.getItem('auramed-theme') === 'dark' || (!('auramed-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             themeToggleLightIcon.classList.remove('hidden');
         } else {
-            themeToggleDarkIcon.classList.add('hidden'); // default light
             themeToggleDarkIcon.classList.remove('hidden');
         }
 
@@ -285,10 +321,10 @@
             themeToggleLightIcon.classList.toggle('hidden');
             if (document.documentElement.classList.contains('dark')) {
                 document.documentElement.classList.remove('dark');
-                localStorage.setItem('clinic-theme', 'light');
+                localStorage.setItem('auramed-theme', 'light');
             } else {
                 document.documentElement.classList.add('dark');
-                localStorage.setItem('clinic-theme', 'dark');
+                localStorage.setItem('auramed-theme', 'dark');
             }
         });
 
