@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Katalog & Order Digital - Demo Kuliner</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800 pb-20 font-sans">
+
+  <!-- 1. HEADER RESTO -->
+  <header class="bg-white border-b sticky top-0 z-10 shadow-sm">
+    <div class="max-w-md mx-auto p-4 flex items-center space-x-3">
+      <div class="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-xl shadow">
+        🍲
+      </div>
+      <div>
+        <h1 class="font-bold text-lg leading-tight text-gray-900">Mie Kampung Mak Jah</h1>
+        <p class="text-xs text-gray-500">Spesialis Mie & Bebek Goreng • Malang</p>
+        <div class="flex items-center space-x-2 mt-1 text-[10px] font-semibold text-green-700">
+          <span class="bg-green-100 px-1.5 py-0.5 rounded">Halal</span>
+          <span class="bg-green-100 px-1.5 py-0.5 rounded">Bisa COD</span>
+          <span class="bg-green-100 px-1.5 py-0.5 rounded">QRIS / Transfer</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. DAFTAR MENU (GRID 2 KOLOM) -->
+  <main class="max-w-md mx-auto p-3">
+    <!-- Kategori Makanan -->
+    <h2 class="font-bold text-sm text-gray-700 uppercase tracking-wider mb-2 mt-1">Makanan Utama</h2>
+    <div class="grid grid-cols-2 gap-3" id="menu-makanan"></div>
+
+    <!-- Kategori Minuman -->
+    <h2 class="font-bold text-sm text-gray-700 uppercase tracking-wider mb-2 mt-6">Minuman</h2>
+    <div class="grid grid-cols-2 gap-3" id="menu-minuman"></div>
+  </main>
+
+  <!-- 3. FOOTER -->
+  <footer class="max-w-md mx-auto px-4 py-3 text-center text-xs text-gray-500 space-y-1.5 border-t mt-4 mb-4">
+    <div class="font-medium text-gray-700">
+      <p>🕒 Jam Buka: Setiap Hari (09.00 - 21.00 WIB)</p>
+      <p class="mt-0.5">📍 Area Layanan: Malang & Sekitarnya</p>
+    </div>
+    
+    <div class="pt-1.5 border-t border-dashed border-gray-200">
+      <p>&copy; 2026 Mie Kampung Mak Jah. All rights reserved.</p>
+      <p class="mt-0.5 text-[10px] text-gray-400">
+        Powered by <span class="font-semibold text-orange-600">Milucha Works</span> • Solusi Digital UMKM Tanpa Biaya Bulanan
+      </p>
+    </div>
+  </footer>
+
+  <!-- 4. STICKY CART BAR -->
+  <div id="sticky-cart" class="fixed bottom-0 left-0 right-0 z-20 p-3 hidden">
+    <div class="max-w-md mx-auto">
+      <button onclick="openModal()" class="w-full bg-green-600 hover:bg-green-700 active:scale-95 transition text-white font-bold py-3.5 px-4 rounded-xl shadow-lg flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+          <span id="cart-count-badge" class="bg-green-800 text-white text-xs px-2 py-1 rounded-md">0 Item</span>
+          <span id="cart-total-price" class="text-sm">Rp 0</span>
+        </div>
+        <div class="flex items-center text-sm font-semibold">
+          <span>Lanjut Pesan via WA</span>
+          <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <!-- 5. MODAL CHECKOUT -->
+  <div id="checkout-modal" class="fixed inset-0 bg-black/60 z-30 hidden flex items-end justify-center sm:items-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-md rounded-t-2xl sm:rounded-2xl p-5 space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b pb-2">
+        <h3 class="font-bold text-lg">Pesan Sekarang (via WhatsApp)</h3>
+        <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 font-bold text-xl">&times;</button>
+      </div>
+
+      <!-- Ringkasan Pesanan -->
+      <div class="bg-gray-50 p-3 rounded-lg border text-xs space-y-1" id="order-summary-list"></div>
+
+      <!-- Form Data Pemesan & Pembayaran -->
+      <form id="wa-form" onsubmit="sendToWhatsApp(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1">Nama Pemesan *</label>
+          <input type="text" id="cust-name" required placeholder="Contoh: Budi" class="w-full border rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-green-500 outline-none">
+        </div>
+        
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1">Alamat / Area Kirim *</label>
+          <input type="text" id="cust-address" required placeholder="Contoh: Sawojajar, Jl. Danau Toba No. 12" class="w-full border rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-green-500 outline-none">
+        </div>
+
+        <!-- FITUR OPSI PEMBAYARAN -->
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1">Metode Pembayaran *</label>
+          <div class="grid grid-cols-3 gap-2">
+            <label class="border rounded-lg p-2 flex flex-col items-center justify-center cursor-pointer text-center hover:border-green-500 bg-gray-50 has-[:checked]:bg-green-50 has-[:checked]:border-green-600">
+              <input type="radio" name="payment_method" value="COD (Bayar di Tempat)" checked onchange="handlePaymentChange('cod')" class="hidden">
+              <span class="text-lg mb-0.5">💵</span>
+              <span class="text-[11px] font-bold text-gray-700">COD</span>
+            </label>
+
+            <label class="border rounded-lg p-2 flex flex-col items-center justify-center cursor-pointer text-center hover:border-green-500 bg-gray-50 has-[:checked]:bg-green-50 has-[:checked]:border-green-600">
+              <input type="radio" name="payment_method" value="Transfer Bank" onchange="handlePaymentChange('transfer')" class="hidden">
+              <span class="text-lg mb-0.5">🏦</span>
+              <span class="text-[11px] font-bold text-gray-700">Transfer</span>
+            </label>
+
+            <label class="border rounded-lg p-2 flex flex-col items-center justify-center cursor-pointer text-center hover:border-green-500 bg-gray-50 has-[:checked]:bg-green-50 has-[:checked]:border-green-600">
+              <input type="radio" name="payment_method" value="QRIS" onchange="handlePaymentChange('qris')" class="hidden">
+              <span class="text-lg mb-0.5">📱</span>
+              <span class="text-[11px] font-bold text-gray-700">QRIS</span>
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1">Catatan Pesanan (Opsional)</label>
+          <input type="text" id="cust-note" placeholder="Contoh: Pedas sedang, bungkus pisah" class="w-full border rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-green-500 outline-none">
+        </div>
+
+        <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow mt-2 flex justify-center items-center">
+          📱 Kirim Pesan ke WA
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 6. POPUP METODE PEMBAYARAN (QRIS & TRANSFER) -->
+  <!-- Popup QRIS -->
+  <div id="qris-popup" class="fixed inset-0 bg-black/70 z-40 hidden flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-xs rounded-2xl p-5 text-center space-y-3 relative shadow-2xl animate-fade-in">
+      <button onclick="closePaymentPopups()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 font-bold text-xl">&times;</button>
+      <div class="inline-block p-2 bg-green-100 rounded-full text-green-700 text-2xl">📱</div>
+      <h4 class="font-bold text-base text-gray-900">Scan QRIS Pembayaran</h4>
+      <p class="text-xs text-gray-500">Scan menggunakan GoPay, OVO, ShopeePay, DANA, atau Mobile Banking.</p>
+      <div class="bg-white p-2 rounded-xl border border-gray-200 inline-block shadow-inner">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=DEMO-QRIS-MAK-JAH" alt="QRIS Code" class="w-48 h-48 mx-auto object-contain">
+      </div>
+      <button onclick="closePaymentPopups()" class="w-full bg-green-600 text-white font-bold text-xs py-2.5 rounded-lg shadow hover:bg-green-700">
+        Saya Sudah Simpan / Siap Bayar
+      </button>
+    </div>
+  </div>
+
+  <!-- Popup Transfer Bank -->
+  <div id="transfer-popup" class="fixed inset-0 bg-black/70 z-40 hidden flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-xs rounded-2xl p-5 text-center space-y-3 relative shadow-2xl">
+      <button onclick="closePaymentPopups()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 font-bold text-xl">&times;</button>
+      <div class="inline-block p-2 bg-blue-100 rounded-full text-blue-700 text-2xl">🏦</div>
+      <h4 class="font-bold text-base text-gray-900">Detail Transfer Bank</h4>
+      
+      <div class="bg-blue-50 border border-blue-200 p-3 rounded-xl text-left text-xs space-y-2">
+        <div>
+          <span class="text-gray-500 block text-[10px]">NAMA BANK</span>
+          <span class="font-bold text-blue-900 text-sm">Bank BCA</span>
+        </div>
+        <div>
+          <span class="text-gray-500 block text-[10px]">NOMOR REKENING</span>
+          <div class="flex justify-between items-center bg-white p-2 rounded border border-blue-200 mt-0.5">
+            <span id="rekening-num" class="font-mono font-bold text-gray-900 text-sm">1234567890</span>
+            <button onclick="copyRekening()" class="bg-blue-600 text-white text-[10px] font-semibold px-2 py-1 rounded hover:bg-blue-700">Salin</button>
+          </div>
+        </div>
+        <div>
+          <span class="text-gray-500 block text-[10px]">ATAS NAMA</span>
+          <span class="font-semibold text-gray-900">Mie Kampung Mak Jah</span>
+        </div>
+      </div>
+
+      <button onclick="closePaymentPopups()" class="w-full bg-blue-600 text-white font-bold text-xs py-2.5 rounded-lg shadow hover:bg-blue-700">
+        Saya Sudah Simpan Rekening
+      </button>
+    </div>
+  </div>
+
+  <!-- 7. JAVASCRIPT LOGIC -->
+  <script>
+    const TARGET_WA_NUMBER = "6281234567890";
+
+    const menuData = [
+      {
+        id: "m1",
+        name: "Mie Ayam Spesial",
+        category: "makanan",
+        price: 15000,
+        desc: "Ayam cincang manis gurih, porsi kenyang",
+        image: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=400&q=80"
+      },
+      {
+        id: "m2",
+        name: "Bebek Goreng Serundeng",
+        category: "makanan",
+        price: 22000,
+        desc: "Empuk, serundeng gurih + sambal ijo",
+        image: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=400&q=80"
+      },
+      {
+        id: "d1",
+        name: "Es Teh Manis",
+        category: "minuman",
+        price: 5000,
+        desc: "Teh melati segar dengan es kristal",
+        image: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=400&q=80"
+      },
+      {
+        id: "d2",
+        name: "Wedang Jahe Sereh",
+        category: "minuman",
+        price: 6000,
+        desc: "Hangat racikan jahe merah asli",
+        image: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=400&q=80"
+      }
+    ];
+
+    let cart = {};
+
+    function formatRupiah(number) {
+      return 'Rp ' + number.toLocaleString('id-ID');
+    }
+
+    function renderMenu() {
+      const makananContainer = document.getElementById('menu-makanan');
+      const minumanContainer = document.getElementById('menu-minuman');
+
+      makananContainer.innerHTML = '';
+      minumanContainer.innerHTML = '';
+
+      menuData.forEach(item => {
+        const qty = cart[item.id] || 0;
+        const cardHTML = `
+          <div class="bg-white rounded-xl shadow-sm border overflow-hidden flex flex-col justify-between">
+            <div>
+              <img src="${item.image}" alt="${item.name}" class="w-full h-28 object-cover">
+              <div class="p-2.5">
+                <h3 class="font-bold text-xs text-gray-900 leading-snug">${item.name}</h3>
+                <p class="text-[10px] text-gray-500 mt-0.5 line-clamp-2">${item.desc}</p>
+                <p class="font-extrabold text-xs text-orange-600 mt-1">${formatRupiah(item.price)}</p>
+              </div>
+            </div>
+            <div class="p-2.5 pt-0">
+              ${qty === 0 ? `
+                <button onclick="updateQty('${item.id}', 1)" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs py-1.5 rounded-lg shadow-sm">
+                  + Tambah
+                </button>
+              ` : `
+                <div class="flex items-center justify-between bg-orange-50 rounded-lg border border-orange-200 p-1">
+                  <button onclick="updateQty('${item.id}', -1)" class="w-6 h-6 bg-orange-500 text-white rounded font-bold text-xs flex items-center justify-center">-</button>
+                  <span class="font-bold text-xs text-orange-700">${qty}</span>
+                  <button onclick="updateQty('${item.id}', 1)" class="w-6 h-6 bg-orange-500 text-white rounded font-bold text-xs flex items-center justify-center">+</button>
+                </div>
+              `}
+            </div>
+          </div>
+        `;
+
+        if (item.category === 'makanan') {
+          makananContainer.innerHTML += cardHTML;
+        } else {
+          minumanContainer.innerHTML += cardHTML;
+        }
+      });
+
+      updateStickyCart();
+    }
+
+    function updateQty(id, change) {
+      if (!cart[id]) cart[id] = 0;
+      cart[id] += change;
+      if (cart[id] <= 0) delete cart[id];
+      renderMenu();
+    }
+
+    function updateStickyCart() {
+      const stickyCart = document.getElementById('sticky-cart');
+      const cartCountBadge = document.getElementById('cart-count-badge');
+      const cartTotalPrice = document.getElementById('cart-total-price');
+
+      let totalItems = 0;
+      let totalPrice = 0;
+
+      Object.keys(cart).forEach(id => {
+        const item = menuData.find(m => m.id === id);
+        if (item) {
+          totalItems += cart[id];
+          totalPrice += item.price * cart[id];
+        }
+      });
+
+      if (totalItems > 0) {
+        stickyCart.classList.remove('hidden');
+        cartCountBadge.innerText = `${totalItems} Item`;
+        cartTotalPrice.innerText = formatRupiah(totalPrice);
+      } else {
+        stickyCart.classList.add('hidden');
+      }
+    }
+
+    // HANDLER POPUP PEMBAYARAN
+    function handlePaymentChange(type) {
+      closePaymentPopups();
+      if (type === 'qris') {
+        document.getElementById('qris-popup').classList.remove('hidden');
+      } else if (type === 'transfer') {
+        document.getElementById('transfer-popup').classList.remove('hidden');
+      }
+    }
+
+    function closePaymentPopups() {
+      document.getElementById('qris-popup').classList.add('hidden');
+      document.getElementById('transfer-popup').classList.add('hidden');
+    }
+
+    function copyRekening() {
+      const rekNum = document.getElementById('rekening-num').innerText;
+      navigator.clipboard.writeText(rekNum);
+      alert('Nomor Rekening berhasil disalin: ' + rekNum);
+    }
+
+    function openModal() {
+      const modal = document.getElementById('checkout-modal');
+      const summaryList = document.getElementById('order-summary-list');
+      
+      let html = '<ul class="space-y-1">';
+      let total = 0;
+
+      Object.keys(cart).forEach(id => {
+        const item = menuData.find(m => m.id === id);
+        const qty = cart[id];
+        const subtotal = item.price * qty;
+        total += subtotal;
+        html += `<li class="flex justify-between"><span>${qty}x ${item.name}</span> <span class="font-semibold">${formatRupiah(subtotal)}</span></li>`;
+      });
+      
+      html += `</ul><div class="border-t mt-2 pt-1 font-bold flex justify-between text-sm text-gray-800"><span>Total:</span> <span class="text-orange-600">${formatRupiah(total)}</span></div>`;
+      summaryList.innerHTML = html;
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('checkout-modal').classList.add('hidden');
+    }
+
+    function sendToWhatsApp(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('cust-name').value;
+      const address = document.getElementById('cust-address').value;
+      const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
+      const note = document.getElementById('cust-note').value;
+
+      let itemLines = [];
+      let total = 0;
+
+      Object.keys(cart).forEach(id => {
+        const item = menuData.find(m => m.id === id);
+        const qty = cart[id];
+        const subtotal = item.price * qty;
+        total += subtotal;
+        itemLines.push(`- ${qty}x ${item.name} (${formatRupiah(subtotal)})`);
+      });
+
+      let text = `Halo Kak, saya mau pesan:\n\n`;
+      text += itemLines.join('\n');
+      text += `\n\n*Total: ${formatRupiah(total)}*`;
+      text += `\n\n*Nama:* ${name}`;
+      text += `\n*Alamat/Area:* ${address}`;
+      text += `\n*Pembayaran:* ${paymentMethod}`;
+      if (note) text += `\n*Catatan:* ${note}`;
+
+      const encodedText = encodeURIComponent(text);
+      const waUrl = `https://wa.me/${TARGET_WA_NUMBER}?text=${encodedText}`;
+
+      window.open(waUrl, '_blank');
+    }
+
+    renderMenu();
+  </script>
+</body>
+</html>
