@@ -51,4 +51,212 @@
         <!-- Banner Singkat -->
         <div class="bg-amber-500 text-slate-950 p-4 rounded-2xl mb-6 shadow-sm">
             <h2 class="font-black text-base">Katalog Unit Mobil Bekas Berkualitas 🚗</h2>
-            <p class="text-xs mt-0.5 text-slate-900 opacity-90">Pilih mobil impianmu, masukkan ke keranjang, dan diskusikan langsung via WhatsApp.</
+            <p class="text-xs mt-0.5 text-slate-900 opacity-90">Pilih mobil impianmu, masukkan ke keranjang, dan diskusikan langsung via WhatsApp.</p>
+        </div>
+
+        <!-- Filter Kategori Kategori Mobil -->
+        <div class="flex gap-2 overflow-x-auto pb-2 mb-4 scrollbar-none" id="category-filters">
+            <button data-cat="ALL" class="filter-btn active whitespace-nowrap px-4 py-2 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 shadow-sm transition">Semua Unit</button>
+            <button data-cat="MPV" class="filter-btn whitespace-nowrap px-4 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 transition">MPV</button>
+            <button data-cat="SUV" class="filter-btn whitespace-nowrap px-4 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 transition">SUV</button>
+            <button data-cat="City Car" class="filter-btn whitespace-nowrap px-4 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 transition">City Car</button>
+        </div>
+
+        <!-- Daftar Katalog Model List Card -->
+        <div id="car-list" class="space-y-3">
+            <!-- Di-render via JavaScript -->
+        </div>
+    </main>
+
+    <!-- Floating Footer Keranjang Pesanan -->
+    <div id="cart-footer" class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 p-3 sm:p-4 shadow-lg hidden">
+        <div class="max-w-xl mx-auto flex items-center justify-between gap-3">
+            <div>
+                <div class="text-[11px] text-slate-500 dark:text-slate-400 font-medium"><span id="cart-count">0</span> unit dipilih</div>
+                <div id="cart-total" class="text-base sm:text-lg font-extrabold text-amber-600 dark:text-amber-400">Rp 0</div>
+            </div>
+            <button onclick="checkoutWhatsApp()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-5 py-2.5 rounded-xl text-xs sm:text-sm shadow-md transition flex items-center gap-1.5">
+                <span>Kirim Booking via WA</span> ➔
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript Logika Keranjang & Tampilan Ala Warung -->
+    <script>
+        const WA_NUMBER = "628xxxxxxxxxx"; // Ganti dengan nomor WhatsApp dealer
+
+        const carsData = [
+            {
+                id: 1,
+                name: "Toyota Kijang Innova Reborn 2.4 V",
+                category: "MPV",
+                year: 2021,
+                trans: "Auto",
+                km: "42.000 km",
+                price: 365000000,
+                img: "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=400&q=80",
+                desc: "Diesel, tangan pertama, servis record resmi, siap pakai."
+            },
+            {
+                id: 2,
+                name: "Honda HR-V 1.5 SE CVT",
+                category: "SUV",
+                year: 2022,
+                trans: "Auto",
+                km: "28.500 km",
+                price: 318000000,
+                img: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=400&q=80",
+                desc: "Honda Sensing, panoramic roof, mulus istimewa."
+            },
+            {
+                id: 3,
+                name: "Honda Brio RS Urbanite",
+                category: "City Car",
+                year: 2023,
+                trans: "Auto",
+                km: "16.200 km",
+                price: 192000000,
+                img: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=400&q=80",
+                desc: "Kondisi seperti baru, cat orisinal, sangat irit."
+            },
+            {
+                id: 4,
+                name: "Mitsubishi Pajero Sport Dakar",
+                category: "SUV",
+                year: 2020,
+                trans: "Auto",
+                km: "58.000 km",
+                price: 445000000,
+                img: "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=400&q=80",
+                desc: "Sunroof normal, kaki-kaki empuk, bebas banjir."
+            }
+        ];
+
+        let cart = {};
+        let currentCategory = 'ALL';
+
+        const formatRupiah = (num) => 'Rp ' + num.toLocaleString('id-ID');
+        const carList = document.getElementById('car-list');
+
+        function renderCars() {
+            const filtered = carsData.filter(item => currentCategory === 'ALL' || item.category === currentCategory);
+
+            carList.innerHTML = filtered.map(item => {
+                const qty = cart[item.id] || 0;
+                return `
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3.5 flex gap-3.5 items-center shadow-sm">
+                        <img src="${item.img}" alt="${item.name}" class="w-20 h-20 sm:w-24 sm:h-24 rounded-xl object-cover flex-shrink-0">
+                        <div class="flex-1 min-w-0">
+                            <span class="text-[10px] font-bold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/70 px-2 py-0.5 rounded">${item.category} • ${item.year}</span>
+                            <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white truncate mt-1">${item.name}</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-1 mt-0.5">${item.desc}</p>
+                            <div class="font-extrabold text-sm sm:text-base text-amber-600 dark:text-amber-400 mt-1">${formatRupiah(item.price)}</div>
+                        </div>
+                        <div class="flex flex-col items-end justify-between self-stretch">
+                            <span class="text-[10px] text-slate-400">${item.km}</span>
+                            ${qty === 0 ? `
+                                <button onclick="updateCart(${item.id}, 1)" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3 py-1.5 rounded-xl text-xs shadow-sm transition">
+                                    + Pilih
+                                </button>
+                            ` : `
+                                <div class="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
+                                    <button onclick="updateCart(${item.id}, -1)" class="w-6 h-6 rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-white font-bold text-xs flex items-center justify-center shadow-sm">-</button>
+                                    <span class="text-xs font-bold px-1">${qty}</span>
+                                    <button onclick="updateCart(${item.id}, 1)" class="w-6 h-6 rounded-lg bg-amber-500 text-slate-950 font-bold text-xs flex items-center justify-center shadow-sm">+</button>
+                                </div>
+                            `}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Filter Kategori
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => {
+                    b.classList.remove('bg-amber-500', 'text-slate-950', 'font-bold', 'shadow-sm');
+                    b.classList.add('bg-white', 'dark:bg-slate-900', 'text-slate-700', 'dark:text-slate-300');
+                });
+                btn.classList.remove('bg-white', 'dark:bg-slate-900', 'text-slate-700', 'dark:text-slate-300');
+                btn.classList.add('bg-amber-500', 'text-slate-950', 'font-bold', 'shadow-sm');
+
+                currentCategory = btn.dataset.cat;
+                renderCars();
+            });
+        });
+
+        function updateCart(id, change) {
+            cart[id] = (cart[id] || 0) + change;
+            if (cart[id] <= 0) delete cart[id];
+            renderCars();
+            updateCartFooter();
+        }
+
+        function updateCartFooter() {
+            const footer = document.getElementById('cart-footer');
+            const countEl = document.getElementById('cart-count');
+            const totalEl = document.getElementById('cart-total');
+
+            let totalCount = 0;
+            let totalPrice = 0;
+
+            for (const [id, qty] of Object.entries(cart)) {
+                const car = carsData.find(c => c.id == id);
+                totalCount += qty;
+                totalPrice += car.price * qty;
+            }
+
+            countEl.textContent = totalCount;
+            totalEl.textContent = formatRupiah(totalPrice);
+
+            if (totalCount > 0) {
+                footer.classList.remove('hidden');
+            } else {
+                footer.classList.add('hidden');
+            }
+        }
+
+        function checkoutWhatsApp() {
+            let message = "Halo Nusantara Auto Garage, saya ingin memesan/booking unit berikut:\n\n";
+            let totalPrice = 0;
+
+            for (const [id, qty] of Object.entries(cart)) {
+                const car = carsData.find(c => c.id == id);
+                const subtotal = car.price * qty;
+                totalPrice += subtotal;
+                message += `• ${car.name} (${car.year}) x${qty} - ${formatRupiah(subtotal)}\n`;
+            }
+
+            message += `\n*Total Estimasi: ${formatRupiah(totalPrice)}*\nMohon informasi ketersediaan unit dan jadwal surveinya. Terima kasih!`;
+
+            window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        // Toggle Tema Dark / Light
+        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+        if (localStorage.getItem('dealer-theme') === 'dark' || (!('dealer-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            themeToggleLightIcon.classList.remove('hidden');
+        } else {
+            themeToggleDarkIcon.classList.remove('hidden');
+        }
+
+        document.getElementById('theme-toggle').addEventListener('click', function() {
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('dealer-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('dealer-theme', 'dark');
+            }
+        });
+
+        renderCars();
+    </script>
+</body>
+</html>
