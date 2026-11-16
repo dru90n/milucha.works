@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="id" id="html-root">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Katalog Jasa & Booking - Demo Service</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Konfigurasi Tailwind untuk mendukung class 'dark' secara manual
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 pb-24 font-sans flex justify-center transition-colors duration-300">
+
+  <!-- KONTAINER UTAMA -->
+  <div class="w-full max-w-md bg-white dark:bg-gray-800 min-h-screen shadow-xl flex flex-col justify-between relative transition-colors duration-300">
+    
+    <div>
+      <!-- 1. HEADER KARTU DENGAN TOMBOL THEME TOGGLE -->
+      <header class="p-4">
+        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-700 dark:to-indigo-900 text-white rounded-2xl p-4 shadow-md flex items-center justify-between">
+          <div class="flex items-center space-x-3 min-w-0">
+            <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-white font-bold text-xl border border-white/20 shrink-0">
+              🛠️
+            </div>
+            <div class="min-w-0">
+              <h1 class="font-bold text-base leading-tight truncate">ProService Malang</h1>
+              <p class="text-[11px] text-blue-100 truncate">Spesialis Servis AC & Panggilan Rumah</p>
+              <div class="flex items-center space-x-1.5 mt-1.5 text-[9px] font-semibold text-blue-900 dark:text-blue-200">
+                <span class="bg-blue-100 dark:bg-blue-900/80 px-1.5 py-0.5 rounded">Bergaransi</span>
+                <span class="bg-blue-100 dark:bg-blue-900/80 px-1.5 py-0.5 rounded">Teknisi Ahli</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Tombol Switch Theme -->
+          <button onclick="toggleTheme()" class="w-9 h-9 bg-white/20 hover:bg-white/30 active:scale-95 transition rounded-xl flex items-center justify-center text-lg shrink-0 ml-2 border border-white/20" title="Ubah Tema">
+            <span id="theme-icon">🌙</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- 2. DAFTAR LAYANAN JASA -->
+      <main class="p-4 space-y-3">
+        <div class="flex justify-between items-center px-1">
+          <h2 class="font-bold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-wider">Pilih Layanan Jasa</h2>
+          <span class="text-[10px] text-gray-400 dark:text-gray-500">Panggil ke Lokasi</span>
+        </div>
+
+        <!-- Container Daftar Layanan (Render via JS) -->
+        <div id="service-list" class="space-y-3">
+          <!-- Item jasa dimasukkan lewat JavaScript -->
+        </div>
+      </main>
+    </div>
+
+    <!-- 3. FOOTER -->
+    <footer class="px-4 py-4 text-center text-xs text-gray-500 dark:text-gray-400 space-y-1.5 border-t dark:border-gray-700 mt-6 bg-gray-50 dark:bg-gray-800/50">
+      <div class="font-medium text-gray-700 dark:text-gray-300 text-[11px]">
+        <p>🕒 Jam Operasional: Senin - Minggu (08.00 - 17.00 WIB)</p>
+        <p class="mt-0.5">📍 Cakupan: Malang Kota & Kabupaten</p>
+      </div>
+      
+      <div class="pt-1.5 border-t border-dashed border-gray-200 dark:border-gray-700">
+        <p class="text-[10px]">&copy; 2026 ProService Malang. All rights reserved.</p>
+        <p class="mt-0.5 text-[9px] text-gray-400 dark:text-gray-500">
+          Powered by <span class="font-semibold text-blue-600 dark:text-blue-400">Milucha Works</span> • Solusi Digital UMKM Tanpa Biaya Bulanan
+        </p>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- 4. STICKY BOOKING BAR -->
+  <div id="sticky-cart" class="fixed bottom-0 left-0 right-0 z-20 p-3 hidden bg-white/90 dark:bg-gray-900/90 backdrop-blur border-t dark:border-gray-800 shadow-lg max-w-md mx-auto">
+    <button onclick="openModal()" class="w-full bg-blue-600 hover:bg-blue-700 active:scale-95 transition text-white font-bold py-3 px-4 rounded-xl shadow flex justify-between items-center text-sm">
+      <div class="flex items-center space-x-2">
+        <span id="cart-count-badge" class="bg-blue-800 text-white text-xs px-2 py-0.5 rounded-md">0 Layanan</span>
+        <span id="cart-total-price" class="text-xs">Estimasi: Rp 0</span>
+      </div>
+      <div class="flex items-center text-xs font-semibold">
+        <span>Booking via WA</span>
+        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+      </div>
+    </button>
+  </div>
+
+  <!-- 5. MODAL BOOKING -->
+  <div id="checkout-modal" class="fixed inset-0 bg-black/60 z-30 hidden flex items-end justify-center sm:items-center p-0 sm:p-4">
+    <div class="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 w-full max-w-md rounded-t-2xl sm:rounded-2xl p-5 space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b dark:border-gray-700 pb-2">
+        <h3 class="font-bold text-base">Form Booking / Panggilan</h3>
+        <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 font-bold text-xl">&times;</button>
+      </div>
+
+      <!-- Ringkasan Layanan -->
+      <div class="bg-blue-50/50 dark:bg-blue-950/40 p-3 rounded-lg border border-blue-100 dark:border-blue-900 text-xs space-y-1" id="order-summary-list"></div>
+
+      <!-- Form Data Pelanggan -->
+      <form id="wa-form" onsubmit="sendToWhatsApp(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">Nama Pemesan *</label>
+          <input type="text" id="cust-name" required placeholder="Contoh: Pak Budi" class="w-full border dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+        </div>
+        
+        <div>
+          <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">Alamat Pengerjaan / Lokasi *</label>
+          <input type="text" id="cust-address" required placeholder="Contoh: Perum Sawojajar Blok C2 No. 5" class="w-full border dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">Jadwal Kunjungan / Pengerjaan *</label>
+          <input type="text" id="cust-schedule" required placeholder="Contoh: Besok jam 10.00 Pagi" class="w-full border dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">Keluhan / Catatan Tambahan (Opsional)</label>
+          <input type="text" id="cust-note" placeholder="Contoh: AC kurang dingin & bunyi berisik" class="w-full border dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+        </div>
+
+        <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow mt-2 flex justify-center items-center text-sm">
+          📱 Kirim Booking ke WhatsApp
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 6. JAVASCRIPT LOGIC -->
+  <script>
+    const TARGET_WA_NUMBER = "6281234567890"; // Ganti nomor WhatsApp tujuan
+
+    // Inisialisasi Tema (Cek LocalStorage)
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.getElementById('html-root').classList.add('dark');
+      document.getElementById('theme-icon').innerText = '☀️';
+    } else {
+      document.getElementById('html-root').classList.remove('dark');
+      document.getElementById('theme-icon').innerText = '🌙';
+    }
+
+    // Fungsi Toggle Tema Light/Dark
+    function toggleTheme() {
+      const htmlRoot = document.getElementById('html-root');
+      const themeIcon = document.getElementById('theme-icon');
+      
+      if (htmlRoot.classList.contains('dark')) {
+        htmlRoot.classList.remove('dark');
+        localStorage.theme = 'light';
+        themeIcon.innerText = '🌙';
+      } else {
+        htmlRoot.classList.add('dark');
+        localStorage.theme = 'dark';
+        themeIcon.innerText = '☀️';
+      }
+    }
+
+    const serviceData = [
+      {
+        id: "s1",
+        name: "Cuci AC 0.5 - 2 PK",
+        price: 75000,
+        duration: "± 45 Menit / unit",
+        desc: "Pembersihan Evaporator, Blower, cek tekanan Freon, garansi anti bocor 1 minggu.",
+        icon: "❄️"
+      },
+      {
+        id: "s2",
+        name: "Isi Freon AC (R32 / R410a)",
+        price: 150000,
+        duration: "± 30 Menit",
+        desc: "Penambahan atau pengisian penuh freon ramah lingkungan beserta pengecekan kebocoran pipa.",
+        icon: "🧪"
+      },
+      {
+        id: "s3",
+        name: "Bongkar Pasang AC",
+        price: 250000,
+        duration: "± 2 Jam",
+        desc: "Jasa pemindahan AC lama ke lokasi baru, termasuk vakum instalasi pipa.",
+        icon: "🔧"
+      },
+      {
+        id: "s4",
+        name: "Paket Service Berkala Mobil",
+        price: 350000,
+        duration: "± 2-3 Jam",
+        desc: "Tune up mesin, ganti oli, cek kelistrikan rem, dan pembersihan filter udara.",
+        icon: "🚗"
+      }
+    ];
+
+    let cart = {};
+
+    function formatRupiah(number) {
+      return 'Rp ' + number.toLocaleString('id-ID');
+    }
+
+    function renderServices() {
+      const container = document.getElementById('service-list');
+      container.innerHTML = '';
+
+      serviceData.forEach(item => {
+        const qty = cart[item.id] || 0;
+        const cardHTML = `
+          <div class="bg-white dark:bg-gray-900 rounded-xl shadow-sm border dark:border-gray-700 p-3.5 flex flex-col justify-between space-y-2 transition-colors">
+            <div class="flex items-start space-x-3">
+              <div class="w-10 h-10 bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center text-xl shrink-0 border border-blue-100 dark:border-blue-900">
+                ${item.icon}
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-bold text-xs text-gray-900 dark:text-gray-100 leading-snug">${item.name}</h3>
+                <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">${item.desc}</p>
+                <div class="flex items-center space-x-2 mt-1.5">
+                  <span class="font-extrabold text-xs text-blue-600 dark:text-blue-400">${formatRupiah(item.price)}</span>
+                  <span class="text-[9px] text-gray-400 dark:text-gray-500">• ${item.duration}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-1">
+              ${qty === 0 ? `
+                <button onclick="updateQty('${item.id}', 1)" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-2 rounded-lg shadow-sm transition">
+                  + Pilih Layanan
+                </button>
+              ` : `
+                <div class="flex items-center justify-between bg-blue-50 dark:bg-blue-950/60 rounded-lg border border-blue-200 dark:border-blue-900 p-1">
+                  <span class="text-[11px] font-bold text-blue-800 dark:text-blue-300 pl-2">Dipilih (${qty}x)</span>
+                  <div class="flex items-center space-x-2">
+                    <button onclick="updateQty('${item.id}', -1)" class="w-6 h-6 bg-blue-600 text-white rounded font-bold text-xs flex items-center justify-center">-</button>
+                    <span class="font-bold text-xs text-blue-900 dark:text-blue-200 px-1">${qty}</span>
+                    <button onclick="updateQty('${item.id}', 1)" class="w-6 h-6 bg-blue-600 text-white rounded font-bold text-xs flex items-center justify-center">+</button>
+                  </div>
+                </div>
+              `}
+            </div>
+          </div>
+        `;
+        container.innerHTML += cardHTML;
+      });
+
+      updateStickyCart();
+    }
+
+    function updateQty(id, change) {
+      if (!cart[id]) cart[id] = 0;
+      cart[id] += change;
+      if (cart[id] <= 0) delete cart[id];
+      renderServices();
+    }
+
+    function updateStickyCart() {
+      const stickyCart = document.getElementById('sticky-cart');
+      const cartCountBadge = document.getElementById('cart-count-badge');
+      const cartTotalPrice = document.getElementById('cart-total-price');
+
+      let totalItems = 0;
+      let totalPrice = 0;
+
+      Object.keys(cart).forEach(id => {
+        const item = serviceData.find(s => s.id === id);
+        if (item) {
+          totalItems += cart[id];
+          totalPrice += item.price * cart[id];
+        }
+      });
+
+      if (totalItems > 0) {
+        stickyCart.classList.remove('hidden');
+        cartCountBadge.innerText = `${totalItems} Layanan`;
+        cartTotalPrice.innerText = `Est: ${formatRupiah(totalPrice)}`;
+      } else {
+        stickyCart.classList.add('hidden');
+      }
+    }
+
+    function openModal() {
+      const modal = document.getElementById('checkout-modal');
+      const summaryList = document.getElementById('order-summary-list');
+      
+      let html = '<ul class="space-y-1">';
+      let total = 0;
+
+      Object.keys(cart).forEach(id => {
+        const item = serviceData.find(s => s.id === id);
+        const qty = cart[id];
+        const subtotal = item.price * qty;
+        total += subtotal;
+        html += `<li class="flex justify-between"><span>${qty}x ${item.name}</span> <span class="font-semibold">${formatRupiah(subtotal)}</span></li>`;
+      });
+      
+      html += `</ul><div class="border-t border-blue-200 dark:border-blue-900 mt-2 pt-1 font-bold flex justify-between text-xs text-gray-800 dark:text-gray-200"><span>Estimasi Total:</span> <span class="text-blue-600 dark:text-blue-400">${formatRupiah(total)}</span></div>`;
+      summaryList.innerHTML = html;
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('checkout-modal').classList.add('hidden');
+    }
+
+    function sendToWhatsApp(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('cust-name').value;
+      const address = document.getElementById('cust-address').value;
+      const schedule = document.getElementById('cust-schedule').value;
+      const note = document.getElementById('cust-note').value;
+
+      let itemLines = [];
+      let total = 0;
+
+      Object.keys(cart).forEach(id => {
+        const item = serviceData.find(s => s.id === id);
+        const qty = cart[id];
+        const subtotal = item.price * qty;
+        total += subtotal;
+        itemLines.push(`- ${qty}x ${item.name} (${formatRupiah(subtotal)})`);
+      });
+
+      let text = `Halo Kak, saya mau booking layanan:\n\n`;
+      text += itemLines.join('\n');
+      text += `\n\n*Estimasi Total: ${formatRupiah(total)}*`;
+      text += `\n\n*Nama:* ${name}`;
+      text += `\n*Alamat Lokasi:* ${address}`;
+      text += `\n*Jadwal Kunjungan:* ${schedule}`;
+      if (note) text += `\n*Keluhan/Catatan:* ${note}`;
+
+      const encodedText = encodeURIComponent(text);
+      const waUrl = `https://wa.me/${TARGET_WA_NUMBER}?text=${encodedText}`;
+
+      window.open(waUrl, '_blank');
+    }
+
+    renderServices();
+  </script>
+</body>
+</html>
