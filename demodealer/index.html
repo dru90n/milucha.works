@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nusantara Auto Garage — Katalog & Pesan Unit</title>
+    <meta name="description" content="Katalog mobil bekas siap pakai. Pilih unit favoritmu dan kirim pemesanan langsung via WhatsApp.">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
+    <script>
+        if (localStorage.getItem('dealer-theme') === 'dark' || (!('dealer-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 antialiased font-sans pb-28 transition-colors duration-300">
+
+    <!-- Header / Navbar Minimalis Ala Warung -->
+    <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <span class="w-8 h-8 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center font-black text-xs">NA</span>
+                <div>
+                    <h1 class="font-extrabold text-sm sm:text-base leading-tight">Nusantara Auto Garage</h1>
+                    <p class="text-[10px] text-amber-600 dark:text-amber-400 font-semibold">● Showroom Buka • Siap Booking</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <!-- Toggle Tema -->
+                <button id="theme-toggle" type="button" aria-label="Ganti Tema" class="p-2 rounded-full text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+                    <svg id="theme-toggle-light-icon" class="hidden w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                    <svg id="theme-toggle-dark-icon" class="hidden w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                </button>
+                <a href="https://milucha.my.id" class="text-xs font-medium text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white px-2 py-1">
+                    &larr; Beranda
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Konten Utama (Mobile Friendly) -->
+    <main class="max-w-xl mx-auto px-4 pt-4">
+        
+        <!-- Banner Singkat -->
+        <div class="bg-amber-500 text-slate-950 p-4 rounded-2xl mb-6 shadow-sm">
+            <h2 class="font-black text-base">Katalog Unit Mobil Bekas Berkualitas 🚗</h2>
+            <p class="text-xs mt-0.5 text-slate-900 opacity-90">Pilih mobil impianmu, masukkan ke keranjang, dan diskusikan langsung via WhatsApp.</
