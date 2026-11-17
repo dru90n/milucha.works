@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="id" id="html-root">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Katalog & Order Katering - Demo Digital</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 pb-24 font-sans flex justify-center transition-colors duration-300">
+
+  <!-- KONTAINER UTAMA (APP BOX FRAME) -->
+  <div class="w-full max-w-md bg-white dark:bg-gray-800 min-h-screen shadow-xl flex flex-col justify-between relative transition-colors duration-300">
+    
+    <div>
+      <!-- 1. HEADER KATALOG KATERING -->
+      <header class="p-4">
+        <div class="bg-gradient-to-r from-emerald-600 to-teal-700 dark:from-emerald-800 dark:to-teal-950 text-white rounded-2xl p-4 shadow-md flex items-center justify-between">
+          <div class="flex items-center space-x-3 min-w-0">
+            <div class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center text-white font-bold text-2xl border border-white/10 shrink-0">
+              🍱
+            </div>
+            <div class="min-w-0">
+              <h1 class="font-bold text-base leading-tight truncate">Dapur Berkah Katering</h1>
+              <p class="text-[11px] text-emerald-100 truncate">Spesialis Nasi Box, Tumpeng & Prasmanan</p>
+              <div class="flex items-center space-x-1.5 mt-1.5 text-[9px] font-semibold text-emerald-900 dark:text-emerald-200">
+                <span class="bg-emerald-100 dark:bg-emerald-900/80 px-1.5 py-0.5 rounded">Halal & Higienis</span>
+                <span class="bg-emerald-100 dark:bg-emerald-900/80 px-1.5 py-0.5 rounded">Gratis Ongkir Area Malang</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Tombol Switch Theme -->
+          <button onclick="toggleTheme()" class="w-9 h-9 bg-white/10 hover:bg-white/20 active:scale-95 transition rounded-xl flex items-center justify-center text-lg shrink-0 ml-2 border border-white/10" title="Ubah Tema">
+            <span id="theme-icon">🌙</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- 2. DAFTAR MENU KATERING -->
+      <main class="p-4 space-y-4">
+        <div class="flex justify-between items-center px-1">
+          <h2 class="font-bold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-wider">Pilih Paket Katering</h2>
+          <span class="text-[10px] text-gray-400 dark:text-gray-500">Pesan Harian / Acara</span>
+        </div>
+
+        <!-- Container Menu (Render via JS) -->
+        <div id="menu-list" class="space-y-3">
+          <!-- Item menu dimasukkan lewat JavaScript -->
+        </div>
+      </main>
+    </div>
+
+    <!-- 3. FOOTER -->
+    <footer class="px-4 py-4 text-center text-xs text-gray-500 dark:text-gray-400 space-y-1.5 border-t dark:border-gray-700 mt-6 bg-gray-50 dark:bg-gray-800/50">
+      <div class="font-medium text-gray-700 dark:text-gray-300 text-[11px]">
+        <p>🕒 Layanan Pesan: Setiap Hari (07.00 - 20.00 WIB)</p>
+        <p class="mt-0.5">📍 Dapur Pusat: Sawojajar, Malang</p>
+      </div>
+      
+      <div class="pt-1.5 border-t border-dashed border-gray-200 dark:border-gray-700">
+        <p class="text-[10px]">&copy; 2026 Dapur Berkah Katering. All rights reserved.</p>
+        <p class="mt-0.5 text-[9px] text-gray-400 dark:text-gray-500">
+          Powered by <span class="font-semibold text-emerald-600 dark:text-emerald-400">Milucha Works</span> • Solusi Digital UMKM Tanpa Biaya Bulanan
+        </p>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- 4. STICKY CART BAR (MELAYANG DI BAWAH) -->
+  <div id="sticky-cart" class="fixed bottom-0 left-0 right-0 z-20 p-3 hidden bg-white/90 dark:bg-gray-900/90 backdrop-blur border-t dark:border-gray-800 shadow-lg max-w-md mx-auto">
+    <button onclick="openModal()" class="w-full bg-emerald-600 hover:bg-emerald-700 active:scale-95 transition text-white font-bold py-3 px-4 rounded-xl shadow flex justify-between items-center text-sm">
+      <div class="flex items-center space-x-2">
+        <span id="cart-count-badge" class="bg-emerald-800 text-white text-xs px-2 py-0.5 rounded-md">0 Porsi</span>
+        <span id="cart-total-price" class="text-xs">Rp 0</span>
+      </div>
+      <div class="flex items-center text-xs font-semibold">
+        <span>Kirim Pesanan via WA</span>
+        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+      </div>
+    </button>
+  </div>
+
+  <!-- 5. MODAL CHECKOUT / FORM PENGIRIMAN -->
+  <div id="checkout-modal" class="fixed inset-0 bg-black/60 z-30 hidden flex items-end justify-center sm:items-center p-0 sm:p-4">
+    <div class="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 w-full max-w-md rounded-t-2xl sm:rounded-2xl p-5 space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b dark:border-gray-700 pb-2">
+        <h3 class="font-bold text-base">Konfirmasi Pesanan Katering</h3>
+        <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 font-bold text-xl">&times;</button>
+      </div>
+
+      <!-- Ringkasan Pesanan -->
+      <div class="bg-emerald-50/60 dark:bg-emerald-950/40 p-3 rounded-lg border border-emerald-200 dark:border-emerald-900 text-xs space-y-1" id="order-summary-list"></div>
+
+      <!-- Form Data Pelanggan (Solusi Anti Salah Format Alamat/Jam Kirim) -->
+      <form id="wa-form" onsubmit="sendToWhatsApp(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">Nama Pemesan / Instansi *</label>
+          <input type="text" id="cust-name" required placeholder="Contoh: Ibu Siska / Kantor Dinas" class="w-full border dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+        </div>
+        
+        <div>
+          <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">Alamat Lengkap Pengiriman *</label>
+          <input type="text" id="cust-address" required placeholder="Contoh: Jl. Danau Toba No. 14, Sawojajar" class="w-full border dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">Tanggal & Jam Kirim *</label>
+          <input type="text" id="cust-schedule" required placeholder="Contoh: Besok, 20 Feb 2026 - Jam 11.00 Siang" class="w-full border dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">Catatan Menu / Alergi (Opsional)</label>
+          <input type="text" id="cust-note" placeholder="Contoh: Jangan pakai sambal, kerupuk dipisah" class="w-full border dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+        </div>
+
+        <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow mt-2 flex justify-center items-center text-sm">
+          📱 Kirim Format Pesanan ke WhatsApp
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 6. JAVASCRIPT LOGIC -->
+  <script>
+    const TARGET_WA_NUMBER = "6281234567890"; // Ganti nomor WhatsApp tujuan katering
+
+    // Inisialisasi Tema (Light/Dark)
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.getElementById('html-root').classList.add('dark');
+      document.getElementById('theme-icon').innerText = '☀️';
+    } else {
+      document.getElementById('html-root').classList.remove('dark');
+      document.getElementById('theme-icon').innerText = '🌙';
+    }
+
+    function toggleTheme() {
+      const htmlRoot = document.getElementById('html-root');
+      const themeIcon = document.getElementById('theme-icon');
+      
+      if (htmlRoot.classList.contains('dark')) {
+        htmlRoot.classList.remove('dark');
+        localStorage.theme = 'light';
+        themeIcon.innerText = '🌙';
+      } else {
+        htmlRoot.classList.add('dark');
+        localStorage.theme = 'dark';
+        themeIcon.innerText = '☀️';
+      }
+    }
+
+    // DATA MENU KATERING
+    const menuData = [
+      {
+        id: "k1",
+        name: "Paket Nasi Box Hemat",
+        price: 22000,
+        minOrder: "Min. 10 porsi",
+        desc: "Nasi putih, Ayam suwir / empal, mi goreng, oseng buncis wortel, kerupuk, & buah.",
+        image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400&q=80"
+      },
+      {
+        id: "k2",
+        name: "Paket Nasi Kotak Premium",
+        price: 35000,
+        minOrder: "Min. 10 porsi",
+        desc: "Nasi daun jeruk, Ayam bakar madu, tahu tempe, urap-urap, sambal terasi, & puding.",
+        image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=400&q=80"
+      },
+      {
+        id: "k3",
+        name: "Nasi Tumpeng Mini (Box)",
+        price: 45000,
+        minOrder: "Min. 5 porsi",
+        desc: "Nasi kuning wangi, perkedel, ayam goreng lengkuas, sambal goreng ati, telur pindang.",
+        image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=400&q=80"
+      },
+      {
+        id: "k4",
+        name: "Prasmanan Acara Kantor/Keluarga",
+        price: 55000,
+        minOrder: "Min. 30 porsi",
+        desc: "Nasi putih, sup kimlo, ayam kuluyuk, sapi lada hitam, kerupuk, es buah, & air mineral.",
+        image: "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=400&q=80"
+      }
+    ];
+
+    let cart = {};
+
+    function formatRupiah(number) {
+      return 'Rp ' + number.toLocaleString('id-ID');
+    }
+
+    function renderMenu() {
+      const container = document.getElementById('menu-list');
+      container.innerHTML = '';
+
+      menuData.forEach(item => {
+        const qty = cart[item.id] || 0;
+        const cardHTML = `
+          <div class="bg-white dark:bg-gray-900 rounded-xl shadow-sm border dark:border-gray-700 overflow-hidden flex flex-col justify-between transition-colors">
+            <div>
+              <img src="${item.image}" alt="${item.name}" class="w-full h-32 object-cover">
+              <div class="p-3">
+                <div class="flex justify-between items-start">
+                  <h3 class="font-bold text-xs text-gray-900 dark:text-gray-100 leading-snug">${item.name}</h3>
+                  <span class="text-[9px] bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 px-1.5 py-0.5 rounded shrink-0 ml-1 font-semibold">${item.minOrder}</span>
+                </div>
+                <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-1">${item.desc}</p>
+                <p class="font-extrabold text-xs text-emerald-600 dark:text-emerald-400 mt-2">${formatRupiah(item.price)} / porsi</p>
+              </div>
+            </div>
+
+            <div class="p-3 pt-0">
+              ${qty === 0 ? `
+                <button onclick="updateQty('${item.id}', 1)" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2 rounded-lg shadow-sm transition">
+                  + Pilih Menu Ini
+                </button>
+              ` : `
+                <div class="flex items-center justify-between bg-emerald-50 dark:bg-emerald-950/60 rounded-lg border border-emerald-200 dark:border-emerald-900 p-1">
+                  <span class="text-[11px] font-bold text-emerald-800 dark:text-emerald-300 pl-2">Jumlah: ${qty} Porsi</span>
+                  <div class="flex items-center space-x-1.5">
+                    <button onclick="updateQty('${item.id}', -1)" class="w-6 h-6 bg-emerald-600 text-white rounded font-bold text-xs flex items-center justify-center">-</button>
+                    <span class="font-bold text-xs text-emerald-900 dark:text-emerald-200 px-1.5">${qty}</span>
+                    <button onclick="updateQty('${item.id}', 1)" class="w-6 h-6 bg-emerald-600 text-white rounded font-bold text-xs flex items-center justify-center">+</button>
+                  </div>
+                </div>
+              `}
+            </div>
+          </div>
+        `;
+        container.innerHTML += cardHTML;
+      });
+
+      updateStickyCart();
+    }
+
+    function updateQty(id, change) {
+      if (!cart[id]) cart[id] = 0;
+      cart[id] += change;
+      if (cart[id] <= 0) delete cart[id];
+      renderMenu();
+    }
+
+    function updateStickyCart() {
+      const stickyCart = document.getElementById('sticky-cart');
+      const cartCountBadge = document.getElementById('cart-count-badge');
+      const cartTotalPrice = document.getElementById('cart-total-price');
+
+      let totalPortions = 0;
+      let totalPrice = 0;
+
+      Object.keys(cart).forEach(id => {
+        const item = menuData.find(m => m.id === id);
+        if (item) {
+          totalPortions += cart[id];
+          totalPrice += item.price * cart[id];
+        }
+      });
+
+      if (totalPortions > 0) {
+        stickyCart.classList.remove('hidden');
+        cartCountBadge.innerText = `${totalPortions} Porsi`;
+        cartTotalPrice.innerText = formatRupiah(totalPrice);
+      } else {
+        stickyCart.classList.add('hidden');
+      }
+    }
+
+    function openModal() {
+      const modal = document.getElementById('checkout-modal');
+      const summaryList = document.getElementById('order-summary-list');
+      
+      let html = '<ul class="space-y-1">';
+      let total = 0;
+
+      Object.keys(cart).forEach(id => {
+        const item = menuData.find(m => m.id === id);
+        const qty = cart[id];
+        const subtotal = item.price * qty;
+        total += subtotal;
+        html += `<li class="flex justify-between"><span>${qty}x ${item.name}</span> <span class="font-semibold">${formatRupiah(subtotal)}</span></li>`;
+      });
+      
+      html += `</ul><div class="border-t border-emerald-200 dark:border-emerald-900 mt-2 pt-1 font-bold flex justify-between text-xs text-gray-800 dark:text-gray-200"><span>Total Keseluruhan:</span> <span class="text-emerald-600 dark:text-emerald-400">${formatRupiah(total)}</span></div>`;
+      summaryList.innerHTML = html;
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('checkout-modal').classList.add('hidden');
+    }
+
+    function sendToWhatsApp(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('cust-name').value;
+      const address = document.getElementById('cust-address').value;
+      const schedule = document.getElementById('cust-schedule').value;
+      const note = document.getElementById('cust-note').value;
+
+      let itemLines = [];
+      let total = 0;
+
+      Object.keys(cart).forEach(id => {
+        const item = menuData.find(m => m.id === id);
+        const qty = cart[id];
+        const subtotal = item.price * qty;
+        total += subtotal;
+        itemLines.push(`- ${qty}x ${item.name} (${formatRupiah(subtotal)})`);
+      });
+
+      let text = `Halo Kak, saya mau pesan katering:\n\n`;
+      text += itemLines.join('\n');
+      text += `\n\n*Total Biaya: ${formatRupiah(total)}*`;
+      text += `\n\n*Nama Pemesan:* ${name}`;
+      text += `\n*Alamat Kirim:* ${address}`;
+      text += `\n*Jadwal Kirim:* ${schedule}`;
+      if (note) text += `\n*Catatan Tambahan:* ${note}`;
+
+      const encodedText = encodeURIComponent(text);
+      const waUrl = `https://wa.me/${TARGET_WA_NUMBER}?text=${encodedText}`;
+
+      window.open(waUrl, '_blank');
+    }
+
+    renderMenu();
+  </script>
+</body>
+</html>
